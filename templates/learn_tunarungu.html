@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/tunarungu.css">
+{% endblock %}
+
+{% block content %}
+<div class="tunarungu-layout" role="main" aria-label="Halaman Pembelajaran Tunarungu">
+  <!-- Header -->
+  <header class="tr-header">
+    <div class="tr-header-left">
+      <a href="/" class="tr-back-link" aria-label="Kembali ke pilih profil">← Kembali</a>
+      <h1 class="tr-title">{% if materi %}{{ materi.judul }}{% else %}Materi Pembelajaran{% endif %}</h1>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="tr-content">
+    {% if materi %}
+      <!-- Animation/Video Area -->
+      <div class="tr-animation-area" aria-label="Video Bahasa Isyarat atau Animasi Visual">
+        {% if materi.konten_visual_url %}
+          <!-- Asumsikan konten_visual_url bisa berupa gambar atau video dari Supabase -->
+          <video controls autoplay muted loop style="max-width: 100%; border-radius: var(--radius-lg); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <source src="{{ materi.konten_visual_url }}" type="video/mp4">
+            Visual pembelajaran
+          </video>
+        {% else %}
+          <div class="tr-animation-placeholder" aria-hidden="true">🎬</div>
+        {% endif %}
+      </div>
+
+      <!-- Subtitle / Takarir (Selalu Terlihat) -->
+      <div class="tr-subtitle-area">
+        <div class="tr-subtitle-box" aria-live="polite">
+          <p class="tr-subtitle-text" id="subtitle-text">{{ materi.deskripsi }}</p>
+        </div>
+      </div>
+      
+      <!-- Button to start quiz -->
+      {% if quiz_questions and quiz_questions|length > 0 %}
+        <div style="text-align: center; margin-top: 2rem;">
+          <button class="tr-nav-btn tr-nav-btn--quiz" onclick="startQuiz()" id="start-quiz-btn">🧩 Mulai Kuis Interaktif</button>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="tr-subtitle-box">
+        <p class="tr-subtitle-text">Materi tidak ditemukan atau sedang disiapkan.</p>
+      </div>
+    {% endif %}
+  </main>
+
+  <!-- Quiz Section (hidden by default, shown via JS) -->
+  <section id="quiz-section" class="tr-quiz" style="display: none;" aria-label="Latihan soal">
+    <div class="tr-quiz-header">
+      <p id="quiz-counter" class="tr-quiz-counter">Pertanyaan 1</p>
+    </div>
+    
+    <p id="quiz-question" class="tr-question"></p>
+    
+    <div id="quiz-options" class="tr-options"></div>
+    
+    <div id="quiz-feedback" class="tr-feedback" style="display: none;" aria-live="assertive">
+      <span id="quiz-feedback-icon" class="tr-feedback-icon"></span>
+      <span id="quiz-feedback-text"></span>
+    </div>
+    <p id="quiz-explanation" class="tr-explanation" style="display: none;"></p>
+
+    <div class="tr-nav" style="justify-content: center; margin-top: 2rem;">
+      <button id="quiz-next-btn" class="tr-nav-btn tr-nav-btn--primary" style="display: none;">
+        Lanjut →
+      </button>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/quiz.js"></script>
+<script>
+  var quizData = {{ quiz_questions | default([]) | tojson | safe }};
+
+  function startQuiz() {
+    document.querySelector('.tr-content').style.display = 'none';
+    var quizSection = document.getElementById('quiz-section');
+    quizSection.style.display = 'block';
+
+    QuizEngine.init({
+      questions: quizData,
+      studentId: 0,
+      moduleName: '{% if materi %}{{ materi.judul }}{% endif %}'
+    });
+
+    // Provide haptic feedback if supported when quiz starts
+    if (navigator.vibrate) {
+      navigator.vibrate([100, 50, 100]);
+    }
+  }
+
+  // Override QuizEngine feedback function for Tunarungu specifically to add haptic feedback
+  const originalShowFeedback = QuizEngine.showFeedback;
+  QuizEngine.showFeedback = function(isCorrect, explanation) {
+    originalShowFeedback.call(QuizEngine, isCorrect, explanation);
+    
+    if (navigator.vibrate) {
+      if (isCorrect) {
+        navigator.vibrate([100, 100, 100]); // Happy vibration
+      } else {
+        navigator.vibrate([300]); // Long vibration for error
+      }
+    }
+  };
+</script>
+{% endblock %}

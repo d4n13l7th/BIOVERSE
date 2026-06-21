@@ -1,0 +1,18 @@
+# /public/animations/
+# ===================
+# Direktori untuk menyimpan file JSON Lottie:
+# - Animasi organ tubuh (jantung, paru-paru, lambung, dll)
+# - Animasi proses biologis (pencernaan, peredaran darah)
+# - Animasi feedback visual (confetti, checkmark, dll)
+#
+# Struktur yang direkomendasikan:
+# animations/
+# ├── pencernaan/
+# │   └── main.json
+# ├── peredaran_darah/
+# │   └── main.json
+# └── feedback/
+#     ├── success.json
+#     └── try_again.json
+#
+# Sumber Lottie: https://lottiefiles.com/

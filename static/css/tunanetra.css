@@ -1,0 +1,166 @@
+/* ═══════════════════════════════════════════════════════════
+   BIOVERSE — Kategori Tunanetra (Jarvis Bot UI)
+   ═══════════════════════════════════════════════════════════
+   Tema: Krem-Hitam (High Contrast Light).
+   Fokus pada asisten bot bulat (Jarvis) di tengah layar.
+*/
+
+:root {
+  --tn-bg: #FDFBF7; /* Krem terang */
+  --tn-text: #000000; /* Hitam pekat untuk kontras maksimum */
+  --tn-accent: #FFD700; /* Kuning tajam */
+  --tn-bot-idle: #000000;
+  --tn-bot-active: #FFD700;
+}
+
+body {
+  background-color: var(--tn-bg);
+  color: var(--tn-text);
+  font-family: 'Outfit', sans-serif;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── Layout & Header ────────────────────────────────────── */
+.tn-header {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 4px solid var(--tn-text);
+}
+
+.tn-header h1 {
+  font-size: 2rem;
+  margin: 0;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.tn-back-btn {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--tn-text);
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 3px solid var(--tn-text);
+  border-radius: 30px;
+  background-color: transparent;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.tn-back-btn:hover, .tn-back-btn:focus {
+  background-color: var(--tn-text);
+  color: var(--tn-bg);
+  outline: 4px solid var(--tn-accent);
+}
+
+/* ── Main Area (Bot Jarvis) ──────────────────────────────── */
+.tn-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.bot-container {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bot-core {
+  width: 150px;
+  height: 150px;
+  background-color: var(--tn-bot-idle);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  z-index: 10;
+}
+
+/* Gelombang Suara (Wave) di belakang Bot */
+.bot-wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 4px solid var(--tn-accent);
+  opacity: 0;
+  z-index: 5;
+}
+
+/* Status: Berbicara (Gelombang aktif) */
+.is-speaking .bot-core {
+  background-color: var(--tn-text);
+  transform: scale(1.1);
+  box-shadow: 0 0 40px var(--tn-accent);
+}
+
+.is-speaking .bot-wave {
+  animation: pulse-wave 1.5s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes pulse-wave {
+  0% {
+    width: 150px;
+    height: 150px;
+    opacity: 1;
+    border-width: 8px;
+  }
+  100% {
+    width: 350px;
+    height: 350px;
+    opacity: 0;
+    border-width: 2px;
+  }
+}
+
+/* Status: Mendengar (Idle) */
+.is-listening .bot-core {
+  background-color: var(--tn-bot-idle);
+  animation: breathe 3s infinite ease-in-out;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* ── Text Feedback Area ──────────────────────────────────── */
+.tn-feedback-text {
+  margin-top: 50px;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  max-width: 800px;
+  padding: 0 20px;
+  line-height: 1.4;
+  height: 100px;
+}
+
+/* ── Screen Reader & Accessibility ───────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

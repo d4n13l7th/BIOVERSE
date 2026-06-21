@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/tunanetra.css">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-page tunanetra-layout">
+  
+  <header class="tn-header">
+    <a href="/" class="tn-back-btn" aria-label="Kembali ke Dasbor Utama">← Kembali</a>
+    <h1>Pendamping Tunanetra</h1>
+    <div style="width: 100px;"></div> <!-- Spacer -->
+  </header>
+
+  <main class="tn-main" aria-live="polite">
+    <!-- Visual Representation of Jarvis Bot -->
+    <div class="bot-container is-listening" id="jarvis-bot" aria-hidden="true">
+      <div class="bot-wave"></div>
+      <div class="bot-wave" style="animation-delay: 0.5s;"></div>
+      <div class="bot-wave" style="animation-delay: 1.0s;"></div>
+      <div class="bot-core"></div>
+    </div>
+
+    <!-- Teks Respon (Juga dibaca oleh screen reader) -->
+    <div class="tn-feedback-text" id="jarvis-text">
+      {% if materi %}
+        Halo! Kita akan belajar tentang {{ materi.judul }}. Sentuh layar atau tekan spasi untuk memulai percakapan.
+      {% else %}
+        Halo! Saya siap membantu pembelajaranmu hari ini.
+      {% endif %}
+    </div>
+
+    <!-- Hidden data for JS logic -->
+    <div class="sr-only" id="materi-deskripsi">
+      {% if materi %}{{ materi.deskripsi }}{% endif %}
+    </div>
+
+  </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Simple simulation of Jarvis Bot interactions
+  const bot = document.getElementById('jarvis-bot');
+  const textOutput = document.getElementById('jarvis-text');
+  const deskripsi = document.getElementById('materi-deskripsi').innerText.trim();
+
+  let isPlaying = false;
+
+  function simulateSpeech(text, duration) {
+    bot.classList.remove('is-listening');
+    bot.classList.add('is-speaking');
+    textOutput.innerText = text;
+    isPlaying = true;
+
+    // Simulate Web Speech Synthesis end
+    setTimeout(() => {
+      bot.classList.remove('is-speaking');
+      bot.classList.add('is-listening');
+      textOutput.innerText = "Mendengarkan...";
+      isPlaying = false;
+    }, duration);
+  }
+
+  // Trigger speech on click/space for prototype
+  document.body.addEventListener('click', () => {
+    if(!isPlaying && deskripsi) {
+      simulateSpeech(deskripsi, 5000); // Simulate 5 seconds speech
+    }
+  });
+
+  document.body.addEventListener('keydown', (e) => {
+    if(e.code === 'Space' && !isPlaying && deskripsi) {
+      simulateSpeech(deskripsi, 5000);
+    }
+  });
+</script>
+{% endblock %}

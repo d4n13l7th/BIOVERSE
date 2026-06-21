@@ -1,0 +1,359 @@
+/* ═══════════════════════════════════════════════════════════
+   BIOVERSE — Category Selector (Premium Light Mode)
+   ═══════════════════════════════════════════════════════════
+   Halaman utama "Pilih Kategori" dengan desain premium ramah ABK.
+   Menggunakan tema warna krem/kuning muda dan biru muda pastel.
+*/
+
+/* ── Variabel Tema Dasar ─────────────────────────────────── */
+:root {
+  --bg-cream: #FDFBF7;
+  --text-navy: #1A365D;
+  --text-muted: #64748B;
+  --accent-blue: #EBF4FF;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --radius-xl: 24px;
+  --transition-normal: 0.3s ease;
+  --transition-spring: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ── Page Background ─────────────────────────────────────── */
+.dashboard-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FFFDF8 0%, #F5F0E6 100%);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-navy);
+}
+
+/* ── Ambient Glow Background (Dipertahankan & Disesuaikan) ─ */
+.dashboard-page::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  /* Glow biru muda pastel */
+  background: radial-gradient(circle, rgba(190, 227, 248, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: ambientFloat 8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.dashboard-page::after {
+  content: '';
+  position: absolute;
+  bottom: -15%;
+  right: -5%;
+  width: 400px;
+  height: 400px;
+  /* Glow kuning pastel */
+  background: radial-gradient(circle, rgba(254, 240, 138, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: ambientFloat 10s ease-in-out infinite alternate-reverse;
+  pointer-events: none;
+}
+
+@keyframes ambientFloat {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate(30px, -20px) scale(1.1);
+  }
+}
+
+/* ── Header (Logo & Profil/Gear) ─────────────────────────── */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  position: relative;
+  z-index: 10;
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-logo {
+  font-size: 2rem;
+}
+
+.profile-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-navy);
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--text-navy);
+  box-shadow: 0 4px 15px rgba(26, 54, 93, 0.15);
+  transition: transform var(--transition-normal);
+}
+
+.profile-pic:hover {
+  transform: scale(1.05);
+}
+
+.gear-icon {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(26, 54, 93, 0.08);
+  transition: all var(--transition-normal);
+}
+
+.gear-icon:hover {
+  color: var(--text-navy);
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 6px 20px rgba(26, 54, 93, 0.15);
+}
+
+/* ── Navbar ──────────────────────────────────────────────── */
+.main-navbar {
+  padding: 10px 50px;
+  position: relative;
+  z-index: 10;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.main-navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 35px;
+  margin: 0;
+  padding: 0;
+  border-bottom: 2px solid rgba(26, 54, 93, 0.1);
+}
+
+.main-navbar a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 16px;
+  padding-bottom: 12px;
+  display: inline-block;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.main-navbar a:hover,
+.main-navbar a.active {
+  color: var(--text-navy);
+}
+
+.main-navbar a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--text-navy);
+  border-radius: 3px 3px 0 0;
+}
+
+/* ── Category Grid ───────────────────────────────────────── */
+.category-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px 50px;
+  flex-grow: 1;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Category Cards ──────────────────────────────────────── */
+.category-card {
+  position: relative;
+  width: 280px;
+  height: 380px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  text-decoration: none;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 30px rgba(26, 54, 93, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: transform var(--transition-spring), box-shadow var(--transition-normal);
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.category-card:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.category-card:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.category-card:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.category-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(26, 54, 93, 0.25);
+}
+
+/* Penempatan Gambar Background */
+.autis-card {
+  background-image: url('../img/autis_photo.png');
+}
+
+.tunanetra-card {
+  background-image: url('../img/tunanetra_photo.png');
+}
+
+.tunarungu-card {
+  background-image: url('../img/tunarungu_photo.png');
+}
+
+/* Efek Gradasi Putih dari bawah ke tengah */
+.card-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.8) 50%,
+      rgba(255, 255, 255, 1) 90%);
+  z-index: 1;
+  transition: height var(--transition-normal);
+}
+
+.category-card:hover .card-gradient {
+  height: 70%;
+}
+
+/* Teks Kategori di atas Card warna putih */
+.category-name {
+  position: absolute;
+  bottom: 25px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  color: var(--text-navy);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  z-index: 2;
+  text-transform: uppercase;
+  transition: transform var(--transition-normal);
+}
+
+.category-card:hover .category-name {
+  transform: translateY(-8px);
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.profile-footer {
+  margin-top: auto;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 1s ease 0.8s forwards;
+  opacity: 0;
+}
+
+.profile-footer-text {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.profile-footer-brand {
+  font-weight: 800;
+  color: var(--text-navy);
+}
+
+/* ── Keyframes (Dipertahankan dari sebelumnya) ───────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .category-grid {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .top-header,
+  .main-navbar {
+    padding: 20px;
+  }
+
+  .main-navbar ul {
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .category-grid {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .category-card {
+    width: 100%;
+    max-width: 340px;
+    height: 380px;
+  }
+}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title | default('BIOVERSE - Dashboard Kategori') }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/index.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-page" role="main" aria-label="Pilih Kategori Pembelajaran">
+
+  <header class="top-header">
+    <div class="logo-container">
+      <span class="profile-logo" aria-hidden="true">🧬</span>
+      <h1 class="profile-title">BIOVERSE</h1>
+    </div>
+
+    <div class="user-actions">
+      <img src="/static/img/profile.png" alt="Profil Pengguna" class="profile-pic">
+      <a href="/settings" class="gear-icon" aria-label="Pengaturan">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+          </path>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <nav class="main-navbar">
+    <ul>
+      <li><a href="#" class="active">Kategori ABK</a></li>
+      <li><a href="#">Materi Belajar</a></li>
+      <li><a href="#">Progres Siswa</a></li>
+      <li><a href="#">Panduan Pendamping</a></li>
+    </ul>
+  </nav>
+
+  <div class="category-grid" id="category-grid">
+
+    <a href="/learn/autis" class="category-card autis-card" tabindex="0" role="button">
+      <div class="card-gradient"></div>
+      <h2 class="category-name">AUTIS</h2>
+    </a>
+
+    <a href="/learn/tunanetra" class="category-card tunanetra-card" tabindex="0" role="button">
+      <div class="card-gradient"></div>
+      <h2 class="category-name">TUNANETRA</h2>
+    </a>
+
+    <a href="/learn/tunarungu" class="category-card tunarungu-card" tabindex="0" role="button">
+      <div class="card-gradient"></div>
+      <h2 class="category-name">TUNARUNGU</h2>
+    </a>
+
+  </div>
+
+  <footer class="profile-footer">
+    <p class="profile-footer-text">
+      <span class="profile-footer-brand">BIOVERSE</span> — Platform Pembelajaran Multisensori Adaptif untuk ABK
+    </p>
+  </footer>
+
+</div>
+{% endblock %}

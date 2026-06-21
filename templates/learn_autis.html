@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/autis.css">
+{% endblock %}
+
+{% block content %}
+<div class="autis-layout" role="main" aria-label="Halaman Pembelajaran Autis">
+  <!-- Header -->
+  <header class="au-header">
+    <a href="/" class="au-back-link" aria-label="Kembali ke pilih profil">← Kembali</a>
+    <h1 class="au-title">{% if materi %}{{ materi.judul }}{% else %}Materi Pembelajaran{% endif %}</h1>
+  </header>
+
+  <!-- Content Area -->
+  <section class="au-content">
+    {% if materi %}
+      <!-- Animation Placeholder / Visual Content -->
+      <div class="au-animation-area" aria-label="Animasi konten pembelajaran">
+        {% if materi.konten_visual_url %}
+          <img src="{{ materi.konten_visual_url }}" alt="Ilustrasi materi" style="max-width: 100%; border-radius: var(--radius-lg);">
+        {% else %}
+          <div class="au-animation-placeholder" aria-hidden="true">🔬</div>
+        {% endif %}
+      </div>
+
+      <!-- Description Text -->
+      <div class="au-text-area">
+        <p class="au-description">{{ materi.deskripsi }}</p>
+      </div>
+      
+      <!-- Button to start quiz -->
+      {% if quiz_questions and quiz_questions|length > 0 %}
+        <button class="au-nav-btn au-nav-btn--quiz" onclick="startQuiz()" id="start-quiz-btn">🧩 Mulai Kuis</button>
+      {% endif %}
+    {% else %}
+      <div class="au-text-area">
+        <p class="au-description">Materi tidak ditemukan atau sedang disiapkan.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- Quiz Section (hidden by default, shown via JS) -->
+  <section id="quiz-section" class="au-quiz" style="display: none;" aria-label="Latihan soal">
+    <div class="au-quiz-header">
+      <p id="quiz-counter" class="au-quiz-counter">Pertanyaan 1</p>
+    </div>
+    <p id="quiz-question" class="au-question"></p>
+    <div id="quiz-options" class="au-options"></div>
+    <div id="quiz-feedback" class="au-feedback" style="display: none;">
+      <p id="quiz-feedback-text"></p>
+      <p id="quiz-explanation" class="au-explanation"></p>
+    </div>
+    <button id="quiz-next-btn" class="au-nav-btn au-nav-btn--next"
+      style="display: none; margin-top: 1rem; width: 100%;">
+      Pertanyaan Berikutnya →
+    </button>
+  </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/quiz.js"></script>
+<script>
+  // Quiz data dari backend
+  var quizData = {{ quiz_questions | default([]) | tojson | safe }};
+
+  function startQuiz() {
+    document.querySelector('.au-content').style.display = 'none';
+    var quizSection = document.getElementById('quiz-section');
+    quizSection.style.display = 'block';
+
+    QuizEngine.init({
+      questions: quizData,
+      studentId: 0, // Placeholder
+      moduleName: '{% if materi %}{{ materi.judul }}{% endif %}'
+    });
+  }
+</script>
+{% endblock %}

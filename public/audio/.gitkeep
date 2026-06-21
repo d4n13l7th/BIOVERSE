@@ -1,0 +1,18 @@
+# /public/audio/
+# ==============
+# Direktori untuk menyimpan file audio:
+# - Voice over instruksi per modul
+# - Sound effects (detak jantung, suara pencernaan, dll)
+# - Audio feedback (benar/salah)
+#
+# Struktur yang direkomendasikan:
+# audio/
+# ├── pencernaan/
+# │   ├── voiceover.mp3
+# │   └── sfx_lambung.mp3
+# ├── peredaran_darah/
+# │   ├── voiceover.mp3
+# │   └── sfx_detak_jantung.mp3
+# └── feedback/
+#     ├── correct.mp3
+#     └── incorrect.mp3

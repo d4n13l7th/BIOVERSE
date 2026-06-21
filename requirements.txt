@@ -1,0 +1,25 @@
+# ============================================
+# Bioverse - Adaptive Learning Platform
+# Python Dependencies (v2.0 — Monolith)
+# ============================================
+
+# --- Core API Framework ---
+fastapi==0.115.6
+
+# --- ASGI Server ---
+uvicorn[standard]==0.34.0
+
+# --- Template Engine ---
+jinja2==3.1.4
+
+# --- Data Validation ---
+pydantic==2.10.4
+
+# --- Environment Variables ---
+python-dotenv==1.0.1
+
+# --- Form Data Parsing ---
+python-multipart==0.0.18
+
+# --- Supabase ---
+supabase==2.3.4

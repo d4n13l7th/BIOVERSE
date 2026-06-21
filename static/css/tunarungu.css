@@ -1,0 +1,452 @@
+/* ═══════════════════════════════════════════════════════════
+   BIOVERSE — Layout Tunarungu
+   ═══════════════════════════════════════════════════════════
+   Tema visual-dominant untuk siswa tunarungu.
+   - Dominasi visual (gambar, animasi, warna)
+   - Takarir (subtitle) selalu aktif
+   - Tanpa ketergantungan pada audio
+   - Isyarat visual untuk feedback (flash, border color)
+   - Vibration cues untuk interaksi penting
+   Dimigrasi dari TunarunguLayout.vue <style scoped>
+*/
+
+/* ── Page Layout ─────────────────────────────────────────── */
+.tunarungu-layout {
+  background: linear-gradient(135deg, #eef4fb 0%, #f8faff 100%);
+  color: #2d3748;
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 900px;
+  margin: 0 auto;
+  animation: pageSlideIn 0.6s ease forwards;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.tr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.tr-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.tr-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: #3182ce;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
+  width: fit-content;
+}
+
+.tr-back-link:hover {
+  background: rgba(49, 130, 206, 0.1);
+}
+
+.tr-title {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #2b6cb0;
+}
+
+.tr-student-name {
+  font-size: var(--text-sm);
+  color: #718096;
+  font-weight: 600;
+}
+
+.tr-level-badge {
+  background-color: #bee3f8;
+  color: #2b6cb0;
+  padding: 0.375rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  align-self: flex-start;
+}
+
+/* ── Content ─────────────────────────────────────────────── */
+.tr-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ── Step Title ──────────────────────────────────────────── */
+.tr-step-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: #2b6cb0;
+  text-align: center;
+  padding: var(--space-3) var(--space-6);
+  background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+  border-radius: var(--radius-lg);
+}
+
+/* ── Animation Area ──────────────────────────────────────── */
+.tr-animation-area {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: 0 10px 30px rgba(43, 108, 176, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+}
+
+.tr-animation-placeholder {
+  font-size: 5rem;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+/* ── Subtitle / Takarir (selalu terlihat) ────────────────── */
+.tr-subtitle-area {
+  width: 100%;
+}
+
+.tr-subtitle-box {
+  background-color: #2d3748;
+  color: #ffffff;
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.tr-subtitle-box::before {
+  content: '📝';
+  position: absolute;
+  left: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+}
+
+.tr-subtitle-text {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding-left: var(--space-8);
+}
+
+/* ── Visual Cues ─────────────────────────────────────────── */
+.tr-visual-cues {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tr-cue-card {
+  background-color: #ffffff;
+  border: 2px solid #bee3f8;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 100px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+
+.tr-cue-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.tr-cue-icon {
+  font-size: 2rem;
+}
+
+.tr-cue-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: #4a5568;
+}
+
+/* ── Text Description ────────────────────────────────────── */
+.tr-text-area {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.tr-description {
+  font-size: var(--text-lg);
+  color: #4a5568;
+  line-height: 1.8;
+}
+
+/* ── Quiz Section ────────────────────────────────────────── */
+.tr-quiz {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: 0 10px 30px rgba(43, 108, 176, 0.1);
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.tr-quiz-header {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.tr-quiz-counter {
+  font-size: var(--text-sm);
+  color: #3182ce;
+  font-weight: 700;
+}
+
+.tr-question {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  text-align: center;
+  color: #2b6cb0;
+  margin-bottom: var(--space-6);
+}
+
+.tr-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.tr-option-btn {
+  background-color: #ebf8ff;
+  color: #2d3748;
+  border: 2px solid #bee3f8;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  justify-content: center;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.tr-option-btn:hover {
+  border-color: #63b3ed;
+  background-color: #bee3f8;
+  transform: translateY(-2px);
+}
+
+.tr-option-btn--correct {
+  border-color: #48bb78;
+  background-color: #c6f6d5;
+  color: #22543d;
+}
+
+.tr-option-btn--wrong {
+  border-color: #fc8181;
+  background-color: #fed7d7;
+  color: #742a2a;
+}
+
+.tr-option-btn[disabled] {
+  cursor: not-allowed;
+}
+
+.tr-option-icon {
+  font-size: 1.5rem;
+}
+
+/* ── Feedback (visual flash) ─────────────────────────────── */
+.tr-feedback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  animation: feedbackFlash 0.3s ease;
+}
+
+.tr-feedback--correct {
+  background-color: #c6f6d5;
+  color: #22543d;
+}
+
+.tr-feedback--wrong {
+  background-color: #fed7d7;
+  color: #742a2a;
+}
+
+.tr-feedback-icon {
+  font-size: 1.5rem;
+}
+
+.tr-explanation {
+  font-size: var(--text-sm);
+  color: #718096;
+  text-align: center;
+  margin-top: var(--space-2);
+  font-weight: 400;
+}
+
+@keyframes feedbackFlash {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── Navigation ──────────────────────────────────────────── */
+.tr-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: var(--space-4);
+}
+
+.tr-nav-btn {
+  background-color: #ebf8ff;
+  color: #2b6cb0;
+  border: 2px solid #bee3f8;
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tr-nav-btn:hover {
+  background-color: #bee3f8;
+}
+
+.tr-nav-btn--primary {
+  background-color: #3182ce;
+  color: #ffffff;
+  border-color: #3182ce;
+}
+
+.tr-nav-btn--primary:hover {
+  background-color: #2c5282;
+}
+
+.tr-nav-btn--quiz {
+  background: linear-gradient(135deg, #3182ce, #2b6cb0);
+  color: #ffffff;
+  border: none;
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.tr-nav-btn--quiz:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Step Dots ───────────────────────────────────────────── */
+.tr-step-dots {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.tr-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background-color: #cbd5e0;
+  transition: background-color var(--transition-normal);
+}
+
+.tr-dot--active {
+  background-color: #3182ce;
+}
+
+/* ── Module Navigation ───────────────────────────────────── */
+.tr-module-nav {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: var(--space-4) 0;
+}
+
+.tr-module-chip {
+  background: #ebf8ff;
+  color: #2b6cb0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border: 2px solid transparent;
+  transition: all var(--transition-normal);
+}
+
+.tr-module-chip:hover {
+  background: #bee3f8;
+  border-color: #63b3ed;
+}
+
+.tr-module-chip--active {
+  background: #3182ce;
+  color: #ffffff;
+  border-color: #3182ce;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .tunarungu-layout {
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  .tr-options {
+    grid-template-columns: 1fr;
+  }
+
+  .tr-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tr-subtitle-box::before {
+    display: none;
+  }
+
+  .tr-subtitle-text {
+    padding-left: 0;
+  }
+}

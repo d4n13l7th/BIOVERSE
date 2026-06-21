@@ -1,0 +1,22 @@
+# ============================================
+# Bioverse - Adaptive Learning Engine
+# Python Dependencies
+# ============================================
+
+# --- Core API Framework ---
+# Framework super cepat untuk membuat API endpoint.
+# Laravel akan mengirim data progress siswa ke sini.
+fastapi==0.115.6
+
+# --- ASGI Server ---
+# Server produksi untuk menjalankan aplikasi FastAPI.
+uvicorn[standard]==0.34.0
+
+# --- Data Processing (Opsional) ---
+# Untuk mengolah data matriks evaluasi, melacak tren skor,
+# dan komputasi numerik waktu respon siswa.
+pandas==2.2.3
+
+# --- Data Validation ---
+# Sudah termasuk dalam FastAPI, tapi di-pin untuk konsistensi.
+pydantic==2.10.4
