@@ -51,6 +51,27 @@ app.include_router(api.router)
 # Evaluation / Adaptive Engine
 app.include_router(evaluation.router)
 
+# Session router (Layer0)
+from routers import session as session_router
+app.include_router(session_router.router, prefix="/api/session", tags=["Layer0"])
+
+# Optional routers for future layers (import if available)
+try:
+    from routers import jarvis as jarvis_router
+    app.include_router(jarvis_router.router, prefix="/api/jarvis", tags=["Layer1"])
+except Exception:
+    pass
+try:
+    from routers import hook as hook_router
+    app.include_router(hook_router.router, prefix="/api/hook", tags=["Layer2"])
+except Exception:
+    pass
+try:
+    from routers import visual as visual_router
+    app.include_router(visual_router.router, prefix="/api/visual", tags=["Layer3"])
+except Exception:
+    pass
+
 
 # ─── Health Check ───────────────────────────────────────────────
 

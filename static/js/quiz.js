@@ -22,6 +22,7 @@ var QuizEngine = (function() {
   var startTime = 0;
   var totalResponseTime = 0;
   var studentId = 0;
+  var sessionId = ''; // NEW: session ID for Hook integration
   var moduleName = '';
   var isActive = false;
   var answered = false;
@@ -31,6 +32,7 @@ var QuizEngine = (function() {
    * @param {Object} config
    * @param {Array} config.questions - Array pertanyaan dari template
    * @param {number} config.studentId - ID siswa
+   * @param {string} config.sessionId - Session ID
    * @param {string} config.moduleName - Nama modul
    */
   function init(config) {
@@ -280,6 +282,22 @@ var QuizEngine = (function() {
           '← Kembali ke Profil' +
         '</button>' +
       '</div>';
+
+    // DISPATCH CUSTOM EVENT FOR HOOK.JS (loose coupling)
+    // After showResult is called, emit quiz-complete event
+    // hook.js will listen and handle reward claiming
+    try {
+      document.dispatchEvent(new CustomEvent('quiz-complete', {
+        detail: {
+          student_id: studentId,
+          session_id: sessionId,
+          module: moduleName,
+          score: score
+        }
+      }));
+    } catch (e) {
+      console.warn('[Quiz] Failed to dispatch quiz-complete event', e);
+    }
   }
 
   // ── CSS class helpers (auto-detect layout) ──

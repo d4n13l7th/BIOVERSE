@@ -58,11 +58,28 @@
       Pertanyaan Berikutnya →
     </button>
   </section>
+
+  <!-- Hook Pet Container (Autis) -->
+  <div id="pet-container" class="pet-hidden">
+    <div id="pet-sprite"></div>
+    <div id="pet-message"></div>
+  </div>
+
 </div>
 {% endblock %}
 
 {% block extra_js %}
+<script>
+  // Expose server-side ids to body dataset for hook.js
+  (function(){
+    try {
+      document.body.dataset.studentId = "{{ student.id if student is defined else '' }}";
+      document.body.dataset.sessionId = "{{ session.session_id if session is defined else '' }}";
+    } catch(e) { /* ignore */ }
+  })();
+</script>
 <script src="/static/js/quiz.js"></script>
+<script src="/static/js/hook.js"></script>
 <script>
   // Quiz data dari backend
   var quizData = {{ quiz_questions | default([]) | tojson | safe }};
@@ -74,9 +91,9 @@
 
     QuizEngine.init({
       questions: quizData,
-      studentId: 0, // Placeholder
+      studentId: {{ student.id if student is defined else 0 }},
+      sessionId: "{{ session.session_id if session is defined else '' }}",
       moduleName: '{% if materi %}{{ materi.judul }}{% endif %}'
     });
   }
 </script>
-{% endblock %}

@@ -426,6 +426,77 @@
   border-color: #3182ce;
 }
 
+/* ── Interactive Elements & Haptic Feedback ──────────────── */
+.interactive-element {
+cursor: pointer;
+transition: transform 0.1s ease, border-color 0.2s ease;
+user-select: none;
+}
+
+.interactive-element:active {
+transform: scale(0.97);
+}
+
+.interactive-element--correct {
+border-color: #48bb78;
+background-color: #c6f6d5;
+}
+
+.interactive-element--wrong {
+border-color: #fc8181;
+background-color: #fed7d7;
+}
+
+/* Shake animation for wrong answer */
+.shake {
+animation: shake-horizontal 0.4s ease-in-out;
+}
+
+@keyframes shake-horizontal {
+0%, 100% { transform: translateX(0); }
+10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+/* ── Infographic Section ─────────────────────────────────── */
+.infographic-section {
+opacity: 0;
+transition: opacity 0.5s ease;
+}
+
+.infographic-section.animate-in {
+opacity: 1;
+}
+
+.infographic-highlight {
+outline: 3px solid #FFD700;
+outline-offset: 2px;
+transition: outline 0.3s ease;
+}
+
+/* ── Haptic Overlay (visual fallback) ─────────────────────── */
+#haptic-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 9999;
+opacity: 0;
+background-color: transparent;
+}
+
+/* ── Scroll Snap (content alignment) ─────────────────────── */
+.tr-content {
+scroll-snap-type: y mandatory;
+}
+
+.tr-animation-area,
+.infographic-section {
+scroll-snap-align: start;
+}
+
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 768px) {
   .tunarungu-layout {

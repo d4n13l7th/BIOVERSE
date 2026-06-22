@@ -57,7 +57,7 @@ class AdaptiveRulesEngine:
 
         return {
             "action": action,
-            "new_level": self._calculate_new_level(action, history),
+            "new_level": self._calculate_new_level(action, student_id, history),
             "audio_speed": self._recommend_audio_speed(action, score),
             "animation_speed": self._recommend_animation_speed(action, score),
             "message": self._generate_message(action, score, module),
@@ -107,12 +107,31 @@ class AdaptiveRulesEngine:
         return "maintain"
 
     def _calculate_new_level(
-        self, action: str, history: list[dict]
-    ) -> Optional[int]:
-        """Menghitung level baru berdasarkan aksi."""
-        # TODO: Implementasi logika level berdasarkan data siswa dari DB.
+        self, action: str, student_id: int, history: list[dict]
+    ) -> int:
+        """Menghitung level baru absolut dengan query ke DB Supabase."""
+        current_level = 1
+        try:
+            from supabase_client import supabase
+            if supabase:
+                # Ambil level terakhir siswa dari tabel progres_siswa (atau abk_profiles)
+                res = supabase.table("progres_siswa").select("level").eq("student_id", student_id).order("created_at", desc=True).limit(1).execute()
+                if res.data and len(res.data) > 0:
+                    current_level = res.data[0].get("level", 1)
+                else:
+                    # Fallback cek profil utama
+                    res_profile = supabase.table("abk_profiles").select("default_level").eq("id", student_id).execute()
+                    if res_profile.data:
+                        current_level = res_profile.data[0].get("default_level", 1)
+        except Exception as e:
+            print(f"Error querying Supabase for level: {e}")
+
         level_map = {"increase": 1, "decrease": -1, "maintain": 0}
-        return level_map.get(action, 0)
+        delta = level_map.get(action, 0)
+        
+        # Hitung level baru absolut
+        new_level = current_level + delta
+        return max(1, min(new_level, 10))
 
     def _recommend_audio_speed(self, action: str, score: float) -> float:
         """Rekomendasi kecepatan audio."""

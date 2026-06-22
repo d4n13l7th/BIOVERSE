@@ -38,45 +38,23 @@
       {% if materi %}{{ materi.deskripsi }}{% endif %}
     </div>
 
+    <!-- Jarvis audio wave canvas and status -->
+    <canvas id="wave-canvas" class="wave-canvas" aria-hidden="true"></canvas>
+    <div id="jarvis-status" class="jarvis-status" role="status">LISTENING</div>
+
   </main>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-  // Simple simulation of Jarvis Bot interactions
-  const bot = document.getElementById('jarvis-bot');
-  const textOutput = document.getElementById('jarvis-text');
-  const deskripsi = document.getElementById('materi-deskripsi').innerText.trim();
-
-  let isPlaying = false;
-
-  function simulateSpeech(text, duration) {
-    bot.classList.remove('is-listening');
-    bot.classList.add('is-speaking');
-    textOutput.innerText = text;
-    isPlaying = true;
-
-    // Simulate Web Speech Synthesis end
-    setTimeout(() => {
-      bot.classList.remove('is-speaking');
-      bot.classList.add('is-listening');
-      textOutput.innerText = "Mendengarkan...";
-      isPlaying = false;
-    }, duration);
-  }
-
-  // Trigger speech on click/space for prototype
-  document.body.addEventListener('click', () => {
-    if(!isPlaying && deskripsi) {
-      simulateSpeech(deskripsi, 5000); // Simulate 5 seconds speech
-    }
-  });
-
-  document.body.addEventListener('keydown', (e) => {
-    if(e.code === 'Space' && !isPlaying && deskripsi) {
-      simulateSpeech(deskripsi, 5000);
-    }
-  });
+  // Expose server-side ids to body dataset for jarvis.js
+  (function(){
+    try {
+      document.body.dataset.studentId = "{{ student.id if student is defined else '' }}";
+      document.body.dataset.sessionId = "{{ session.session_id if session is defined else '' }}";
+    } catch(e) { /* ignore */ }
+  })();
 </script>
+<script src="/static/js/jarvis.js"></script>
 {% endblock %}

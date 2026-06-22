@@ -55,17 +55,12 @@ async def evaluate_student(request: EvaluationRequest):
         add_progress(progress_record)
 
         # Update level in Supabase if needed
-        if recommendation.get("new_level", 0) != 0:
-            level_increment = recommendation["new_level"]
+        new_level = recommendation.get("new_level")
+        if new_level is not None and new_level != request.current_level:
             try:
                 from supabase_client import supabase
                 if supabase:
-                    # Get current profile (using student_id to map to profile ID for now)
-                    res = supabase.table('abk_profiles').select('default_level').eq('id', request.student_id).execute()
-                    if res.data:
-                        current_level = res.data[0].get('default_level', 1)
-                        new_level = max(1, current_level + level_increment) # Prevent level from dropping below 1
-                        supabase.table('abk_profiles').update({'default_level': new_level}).eq('id', request.student_id).execute()
+                    supabase.table('abk_profiles').update({'default_level': new_level}).eq('id', request.student_id).execute()
             except Exception as e:
                 print(f"Supabase Error (update_level): {e}")
 

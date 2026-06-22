@@ -1,0 +1,11 @@
+{
+  "venvPath": "bioverse/adaptive_engine",
+  "venv": "venv",
+  "extraPaths": ["bioverse"],
+  "executionEnvironments": [
+    {
+      "root": "bioverse",
+      "extraPaths": ["."]
+    }
+  ]
+}

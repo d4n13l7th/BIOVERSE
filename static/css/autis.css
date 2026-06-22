@@ -377,6 +377,102 @@
   border-color: #7c6aad;
 }
 
+/* ── Hook Pet Container & Escalation ─────────────────────── */
+#pet-container {
+position: fixed;
+bottom: 2rem;
+right: 2rem;
+z-index: 1000;
+cursor: pointer;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 0.5rem;
+}
+
+#pet-sprite {
+width: 80px;
+height: 80px;
+background-color: transparent;
+/* Owner provides image/animation via CSS background or child elements */
+}
+
+#pet-message {
+background: rgba(0,0,0,0.85);
+color: #fff;
+padding: 0.5rem 0.75rem;
+border-radius: 0.5rem;
+font-size: 0.875rem;
+font-weight: 600;
+white-space: nowrap;
+opacity: 0;
+pointer-events: none;
+}
+
+.pet-hidden {
+opacity: 0;
+pointer-events: none;
+}
+
+/* STAGE 1: Gradual appearance (1.5s minimum) */
+.pet-stage-1 {
+animation: pet-enter 1.5s ease-in forwards;
+}
+
+/* STAGE 2: Gentle bounce animation */
+.pet-stage-2 {
+animation: pet-enter 1.5s ease-in forwards,
+           pet-gentle-bounce 2s ease-in-out 1.5s infinite;
+}
+.pet-stage-2 #pet-message {
+opacity: 1;
+animation: message-fade 0.8s ease-in 1.5s forwards;
+}
+
+/* STAGE 3: Attention pulse (urgent, still smooth) */
+.pet-stage-3 {
+animation: pet-enter 1.5s ease-in forwards,
+           pet-attention-pulse 1.5s ease-in-out 1.5s infinite;
+}
+.pet-stage-3 #pet-message {
+opacity: 1;
+animation: message-fade 0.8s ease-in 1.5s forwards;
+}
+
+/* Animations */
+@keyframes pet-enter {
+from { opacity: 0; transform: translateY(20px) scale(0.8); }
+to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pet-gentle-bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-8px); }
+}
+
+@keyframes pet-attention-pulse {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.08); }
+}
+
+@keyframes message-fade {
+from { opacity: 0; transform: translateY(-8px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive Pet Container ────────────────────────────── */
+@media (max-width: 640px) {
+#pet-container {
+  bottom: 1rem;
+  right: 1rem;
+}
+  
+#pet-sprite {
+  width: 60px;
+  height: 60px;
+}
+}
+
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 768px) {
   .autis-layout {

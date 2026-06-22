@@ -23,12 +23,24 @@
       <div class="tr-animation-area" aria-label="Video Bahasa Isyarat atau Animasi Visual">
         {% if materi.konten_visual_url %}
           <!-- Asumsikan konten_visual_url bisa berupa gambar atau video dari Supabase -->
-          <video controls autoplay muted loop style="max-width: 100%; border-radius: var(--radius-lg); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+          <video controls autoplay muted loop style="max-width: 100%; border-radius: var(--radius-lg); box-shadow: 0 4px 12px rgba(0,0,0,0.1);"
+            id="materi-video" data-sync-timestamps="{{ materi.sync_timestamps | tojson | safe }}">
             <source src="{{ materi.konten_visual_url }}" type="video/mp4">
+            <track kind="subtitles" src="{{ materi.vtt_url }}" id="vtt-track" srclang="id" label="Bahasa Indonesia" default>
             Visual pembelajaran
           </video>
         {% else %}
           <div class="tr-animation-placeholder" aria-hidden="true">🎬</div>
+        {% endif %}
+      </div>
+
+      <!-- Infographic Section (will get .infographic-section wrapper in template) -->
+      <div class="infographic-section">
+        {% if materi.sign_language_video_url %}
+          <video style="max-width: 100%; border-radius: var(--radius-lg);" controls muted>
+            <source src="{{ materi.sign_language_video_url }}" type="video/mp4">
+            Video Bahasa Isyarat
+          </video>
         {% endif %}
       </div>
 
@@ -74,43 +86,39 @@
       </button>
     </div>
   </section>
+
+  <!-- Haptic Overlay (visual fallback for no vibration) -->
+  <div id="haptic-overlay"></div>
+
 </div>
 {% endblock %}
 
 {% block extra_js %}
+<script>
+  // Expose server-side ids to body dataset
+  (function(){
+   try {
+     document.body.dataset.studentId = "{{ student.id if student is defined else '' }}";
+     document.body.dataset.sessionId = "{{ session.session_id if session is defined else '' }}";
+   } catch(e) { /* ignore */ }
+  })();
+</script>
 <script src="/static/js/quiz.js"></script>
+<script src="/static/js/visual-haptic.js"></script>
 <script>
   var quizData = {{ quiz_questions | default([]) | tojson | safe }};
 
   function startQuiz() {
-    document.querySelector('.tr-content').style.display = 'none';
-    var quizSection = document.getElementById('quiz-section');
-    quizSection.style.display = 'block';
+   document.querySelector('.tr-content').style.display = 'none';
+   var quizSection = document.getElementById('quiz-section');
+   quizSection.style.display = 'block';
 
-    QuizEngine.init({
-      questions: quizData,
-      studentId: 0,
-      moduleName: '{% if materi %}{{ materi.judul }}{% endif %}'
-    });
-
-    // Provide haptic feedback if supported when quiz starts
-    if (navigator.vibrate) {
-      navigator.vibrate([100, 50, 100]);
-    }
+   QuizEngine.init({
+     questions: quizData,
+     studentId: {{ student.id if student is defined else 0 }},
+     sessionId: "{{ session.session_id if session is defined else '' }}",
+     moduleName: '{% if materi %}{{ materi.judul }}{% endif %}'
+   });
   }
-
-  // Override QuizEngine feedback function for Tunarungu specifically to add haptic feedback
-  const originalShowFeedback = QuizEngine.showFeedback;
-  QuizEngine.showFeedback = function(isCorrect, explanation) {
-    originalShowFeedback.call(QuizEngine, isCorrect, explanation);
-    
-    if (navigator.vibrate) {
-      if (isCorrect) {
-        navigator.vibrate([100, 100, 100]); // Happy vibration
-      } else {
-        navigator.vibrate([300]); // Long vibration for error
-      }
-    }
-  };
 </script>
 {% endblock %}
